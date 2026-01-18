@@ -86,6 +86,12 @@
           width: 140px;
           font-weight: bold;
           color: #555;
+          vertical-align: top;
+        }
+
+        .address-content {
+          display: inline-block;
+          vertical-align: top;
         }
 
         table {
@@ -176,7 +182,7 @@
         <div class="info-block">
             <h3>Patient Information</h3>
             <p><span class="info-label">Name:</span> {{ patient_name }}</p>
-            <p><span class="info-label">Address:</span> {{ patient_address }}</p>
+            <p><span class="info-label">Address:</span> <span class="address-content">{{ patient_address | safe }}</span></p>
             <p><span class="info-label">Cell:</span> {{ patient_cell }}</p>
             <p><span class="info-label">Email:</span> {{ patient_email }}</p>
         </div>

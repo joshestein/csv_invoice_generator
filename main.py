@@ -30,7 +30,6 @@ def read_invoice(path: Path):
         'P. Code': str,
     }
     df = pd.read_csv(path, dtype=dtype_spec)
-    print(df)
     return df
 
 

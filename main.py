@@ -9,7 +9,15 @@ from weasyprint import HTML
 load_dotenv()
 
 def read_invoice(path: Path):
-    df = pd.read_csv(path)
+    # Specify dtype for columns that should be strings (to preserve leading zeros)
+    dtype_spec = {
+        'Cell number': str,
+        'Next of kin cellphone number': str,
+        'Second next of kin cellphone number': str,
+        'Medical aid number': str,
+        'P. Code': str,
+    }
+    df = pd.read_csv(path, dtype=dtype_spec)
     print(df)
     return df
 

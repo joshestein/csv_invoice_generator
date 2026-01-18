@@ -127,8 +127,14 @@ def generate_invoice(data, template_path: Path, output_path: Path):
     print(f"Invoice generated at {output_path}")
 
 
-def generate_invoices_from_csv(csv_path: Path, output_dir: Path = None):
-    """Generate multiple invoices from CSV, grouped by patient and month."""
+def generate_invoices_from_csv(csv_path: Path, output_dir: Path = None, month_filter: str = None):
+    """Generate multiple invoices from CSV, grouped by patient and month.
+
+    Args:
+        csv_path: Path to the CSV file
+        output_dir: Directory to save PDFs (default: output/)
+        month_filter: Optional filter in format 'YYYY-MM' (e.g., '2025-11') to only generate invoices for that month
+    """
     # Set default output directory
     if output_dir is None:
         output_dir = Path(os.getcwd()) / "output"
@@ -139,6 +145,13 @@ def generate_invoices_from_csv(csv_path: Path, output_dir: Path = None):
     # Read and group data
     df = read_invoice(csv_path)
     groups = group_by_patient_month(df)
+
+    # Filter by month if specified
+    if month_filter:
+        groups = [(key, group) for key, group in groups if str(key[1]) == month_filter]
+        if not groups:
+            print(f"No data found for month {month_filter}")
+            return
 
     print(f"Found {len(groups)} patient-month group(s)")
 
@@ -173,7 +186,12 @@ def generate_invoices_from_csv(csv_path: Path, output_dir: Path = None):
 
 def main():
     csv_path = Path(os.getcwd()) / "invoices" / "test.csv"
-    generate_invoices_from_csv(csv_path)
+
+    # Default to current month in YYYY-MM format
+    current_month = datetime.now().strftime("%Y-%m")
+    print(f"Generating invoices for current month: {current_month}")
+
+    generate_invoices_from_csv(csv_path, month_filter=current_month)
 
 
 if __name__ == "__main__":

@@ -1,286 +1,286 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Medical Invoice - {{ patient_name }}</title>
-    <style>
-        :root {
-          --primary-color: #2c5282;
-          --text-muted: #666;
-          --border-color: #ddd;
-          --bg-light: #f8f9fa;
-          --font-base: 10pt;
-        }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Medical Invoice - {{ patient_name }}</title>
+  <style>
+    :root {
+      --primary-color: #2c5282;
+      --text-muted: #666;
+      --border-color: #ddd;
+      --bg-light: #f8f9fa;
+      --font-base: 10pt;
+    }
 
-        @page {
-          size: A4;
-          margin: 1.5cm 1.5cm;
-          @bottom-right {
-            content: "Page " counter(page) " of " counter(pages);
-            font-size: 9pt;
-            color: var(--text-muted);
-          }
-        }
+    @page {
+      size: A4;
+      margin: 1.5cm 1.5cm;
+      @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+        font-size: 9pt;
+        color: var(--text-muted);
+      }
+    }
 
-        body {
-          font-family: "Helvetica", "Arial", sans-serif;
-          font-size: var(--font-base);
-          line-height: 1.3;
-          color: #333;
-        }
+    body {
+      font-family: "Helvetica", "Arial", sans-serif;
+      font-size: var(--font-base);
+      line-height: 1.3;
+      color: #333;
+    }
 
-        .header {
-          margin-bottom: 15px;
-          border-bottom: 2px solid var(--primary-color);
-          padding-bottom: 10px;
-        }
+    .header {
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 10px;
+    }
 
-        .practice-info {
-          text-align: right;
-          color: var(--primary-color);
-        }
+    .practice-info {
+      text-align: right;
+      color: var(--primary-color);
+    }
 
-        .practice-info h1 {
-          margin: 0 0 5px 0;
-          font-size: 18pt;
-          font-weight: bold;
-        }
+    .practice-info h1 {
+      margin: 0 0 5px 0;
+      font-size: 18pt;
+      font-weight: bold;
+    }
 
-        .practice-info p {
-          margin: 2px 0;
-          font-size: var(--font-base);
-        }
+    .practice-info p {
+      margin: 2px 0;
+      font-size: var(--font-base);
+    }
 
-        .invoice-title {
-          margin: 30px 0 20px 0;
-          font-size: 14pt;
-          color: var(--primary-color);
-          font-weight: bold;
-        }
+    .invoice-title {
+      margin: 30px 0 20px 0;
+      font-size: 14pt;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
 
-        .invoice-meta {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 30px;
-        }
+    .invoice-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
 
-        .invoice-meta-left,
-        .invoice-meta-right {
-          width: 48%;
-        }
+    .invoice-meta-left,
+    .invoice-meta-right {
+      width: 48%;
+    }
 
-        .info-block {
-          margin-bottom: 20px;
-        }
+    .info-block {
+      margin-bottom: 20px;
+    }
 
-        .info-block h3 {
-          margin: 0 0 8px 0;
-          font-size: 11pt;
-          color: var(--primary-color);
-          text-transform: uppercase;
-          font-weight: bold;
-          border-bottom: 1px solid var(--border-color);
-          padding-bottom: 3px;
-        }
+    .info-block h3 {
+      margin: 0 0 8px 0;
+      font-size: 11pt;
+      color: var(--primary-color);
+      text-transform: uppercase;
+      font-weight: bold;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 3px;
+    }
 
-        .info-block p {
-          margin: 3px 0;
-          font-size: var(--font-base);
-        }
+    .info-block p {
+      margin: 3px 0;
+      font-size: var(--font-base);
+    }
 
-        .info-label {
-          display: inline-block;
-          width: 140px;
-          font-weight: bold;
-          color: #555;
-          vertical-align: top;
-        }
+    .info-label {
+      display: inline-block;
+      width: 140px;
+      font-weight: bold;
+      color: #555;
+      vertical-align: top;
+    }
 
-        .address-content {
-          display: inline-block;
-          vertical-align: top;
-        }
+    .address-content {
+      display: inline-block;
+      vertical-align: top;
+    }
 
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          margin: 20px 0;
-        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
 
-        thead {
-          background-color: var(--primary-color);
-          color: white;
-        }
+    thead {
+      background-color: var(--primary-color);
+      color: white;
+    }
 
-        th {
-          padding: 12px 8px;
-          text-align: left;
-          font-weight: bold;
-          font-size: var(--font-base);
-        }
+    th {
+      padding: 12px 8px;
+      text-align: left;
+      font-weight: bold;
+      font-size: var(--font-base);
+    }
 
-        td {
-          padding: 10px 8px;
-          border-bottom: 1px solid #eee;
-          font-size: var(--font-base);
-        }
+    td {
+      padding: 10px 8px;
+      border-bottom: 1px solid #eee;
+      font-size: var(--font-base);
+    }
 
-        tbody tr:hover {
-          background-color: var(--bg-light);
-        }
+    tbody tr:hover {
+      background-color: var(--bg-light);
+    }
 
-        .text-right {
-          text-align: right;
-        }
+    .text-right {
+      text-align: right;
+    }
 
-        .text-center {
-          text-align: center;
-        }
+    .text-center {
+      text-align: center;
+    }
 
-        .payment-info {
-            margin-top: 30px;
-            padding: 15px;
-            background-color: var(--bg-light);
-            border-left: 4px solid var(--primary-color);
-        }
+    .payment-info {
+        margin-top: 30px;
+        padding: 15px;
+        background-color: var(--bg-light);
+        border-left: 4px solid var(--primary-color);
+    }
 
-        .payment-info h3 {
-            margin: 0 0 10px 0;
-            color: var(--primary-color);
-        }
+    .payment-info h3 {
+        margin: 0 0 10px 0;
+        color: var(--primary-color);
+    }
 
-        .payment-info p {
-            margin: 5px 0;
-            font-size: var(--font-base);
-        }
+    .payment-info p {
+        margin: 5px 0;
+        font-size: var(--font-base);
+    }
 
-        .footer {
-          clear: both;
-          margin-top: 50px;
-          padding-top: 20px;
-          border-top: 1px solid var(--border-color);
-          font-size: 9pt;
-          color: var(--text-muted);
-          text-align: center;
-        }
-    </style>
+    .footer {
+      clear: both;
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      font-size: 9pt;
+      color: var(--text-muted);
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 <div class="header">
-    <div class="practice-info">
-        <h1>{{ doctor_name | default("Dr. Medical Practice") }}</h1>
-        <p>
-            {{ practice_address | default("123 Medical Street, City, Postal Code") }}
-        </p>
-        <p>
-            Tel: {{ practice_phone | default("(021) 123-4567") }} | Email: {{
-            practice_email | default("info@practice.com") }}
-        </p>
-        <p>Practice Number: {{ practice_number | default("123456") }}</p>
-        <p>HPCSA Number: {{ mp_number | default("123456") }}</p>
-    </div>
+  <div class="practice-info">
+    <h1>{{ doctor_name | default("Dr. Medical Practice") }}</h1>
+    <p>
+      {{ practice_address | default("123 Medical Street, City, Postal Code") }}
+    </p>
+    <p>
+      Tel: {{ practice_phone | default("(021) 123-4567") }} | Email: {{
+      practice_email | default("info@practice.com") }}
+    </p>
+    <p>Practice Number: {{ practice_number | default("123456") }}</p>
+    <p>HPCSA Number: {{ mp_number | default("123456") }}</p>
+  </div>
 </div>
 
 <h2 class="invoice-title">INVOICE</h2>
 
 <div class="invoice-meta">
-    <div class="invoice-meta-left">
-        <div class="info-block">
-            <h3>Patient Information</h3>
-            <p><span class="info-label">Name:</span> {{ patient_name }}</p>
-            <p><span class="info-label">Address:</span> <span
-                    class="address-content">{{ patient_address | safe }}</span></p>
-            <p><span class="info-label">Cell:</span> {{ patient_cell }}</p>
-            <p><span class="info-label">Email:</span> {{ patient_email }}</p>
-        </div>
-
-        {% if medical_aid_name %}
-        <div class="info-block">
-            <h3>Medical Aid</h3>
-            <p>
-                <span class="info-label">Medical Aid:</span> {{ medical_aid_name }}
-            </p>
-            <p>
-                <span class="info-label">Member Number:</span> {{ medical_aid_number
-                }}
-            </p>
-        </div>
-        {% endif %}
+  <div class="invoice-meta-left">
+    <div class="info-block">
+      <h3>Patient Information</h3>
+      <p><span class="info-label">Name:</span> {{ patient_name }}</p>
+      <p><span class="info-label">Address:</span> <span
+          class="address-content">{{ patient_address | safe }}</span></p>
+      <p><span class="info-label">Cell:</span> {{ patient_cell }}</p>
+      <p><span class="info-label">Email:</span> {{ patient_email }}</p>
     </div>
 
-    <div class="invoice-meta-right">
-        <div class="info-block">
-            <h3>Invoice Details</h3>
-            <p>
-                <span class="info-label">Invoice Number:</span> {{ invoice_number }}
-            </p>
-            <p>
-                <span class="info-label">Invoice Date:</span> {{ invoice_date }}
-            </p>
-            <p><span class="info-label">Period:</span> {{ period }}</p>
-            <p>
-                <span class="info-label">Due Date:</span> {{ due_date |
-                default("Upon Receipt") }}
-            </p>
-        </div>
-
-        {% if next_of_kin_name %}
-        <div class="info-block">
-            <h3>Next of kin</h3>
-            <p><span class="info-label">Name:</span> {{ next_of_kin_name }}</p>
-            <p><span class="info-label">Cell:</span> {{ next_of_kin_cell }}</p>
-            {% if next_of_kin_email %}
-            <p><span class="info-label">Email:</span> {{ next_of_kin_email }}</p>
-            {% endif %}
-        </div>
-        {% endif %}
-
-        {% if second_next_of_kin_name %}
-        <div class="info-block">
-            <h3>Second next of kin</h3>
-            <p><span class="info-label">Name:</span> {{ second_next_of_kin_name }}</p>
-            <p><span class="info-label">Cell:</span> {{ second_next_of_kin_cell }}</p>
-            {% if next_of_kin_email %}
-            <p><span class="info-label">Email:</span> {{ second_next_of_kin_email }}</p>
-            {% endif %}
-        </div>
-        {% endif %}
+    {% if medical_aid_name %}
+    <div class="info-block">
+      <h3>Medical Aid</h3>
+      <p>
+        <span class="info-label">Medical Aid:</span> {{ medical_aid_name }}
+      </p>
+      <p>
+        <span class="info-label">Member Number:</span> {{ medical_aid_number
+        }}
+      </p>
     </div>
+    {% endif %}
+  </div>
+
+  <div class="invoice-meta-right">
+    <div class="info-block">
+      <h3>Invoice Details</h3>
+      <p>
+        <span class="info-label">Invoice Number:</span> {{ invoice_number }}
+      </p>
+      <p>
+        <span class="info-label">Invoice Date:</span> {{ invoice_date }}
+      </p>
+      <p><span class="info-label">Period:</span> {{ period }}</p>
+      <p>
+        <span class="info-label">Due Date:</span> {{ due_date |
+        default("Upon Receipt") }}
+      </p>
+    </div>
+
+    {% if next_of_kin_name %}
+    <div class="info-block">
+      <h3>Next of kin</h3>
+      <p><span class="info-label">Name:</span> {{ next_of_kin_name }}</p>
+      <p><span class="info-label">Cell:</span> {{ next_of_kin_cell }}</p>
+      {% if next_of_kin_email %}
+      <p><span class="info-label">Email:</span> {{ next_of_kin_email }}</p>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% if second_next_of_kin_name %}
+    <div class="info-block">
+      <h3>Second next of kin</h3>
+      <p><span class="info-label">Name:</span> {{ second_next_of_kin_name }}</p>
+      <p><span class="info-label">Cell:</span> {{ second_next_of_kin_cell }}</p>
+      {% if next_of_kin_email %}
+      <p><span class="info-label">Email:</span> {{ second_next_of_kin_email }}</p>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
 </div>
 
 <table>
-    <thead>
-    <tr>
-        <th>Date</th>
-        <th>P. Code</th>
-        <th>ICD Code</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for item in line_items %}
-    <tr>
-        <td>{{ item.date }}</td>
-        <td>{{ item.p_code }}</td>
-        <td>{{ item.icd_code }}</td>
-    </tr>
-    {% endfor %}
-    </tbody>
+  <thead>
+  <tr>
+    <th>Date</th>
+    <th>P. Code</th>
+    <th>ICD Code</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for item in line_items %}
+  <tr>
+    <td>{{ item.date }}</td>
+    <td>{{ item.p_code }}</td>
+    <td>{{ item.icd_code }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
 </table>
 
 <div class="payment-info">
-    <h3>Payment Information</h3>
-    <p><strong>Bank:</strong> {{ bank_name | default("Sample Bank") }}</p>
-    <p><strong>Account Number:</strong> {{ bank_account | default("1234567890") }}</p>
-    <p><strong>Branch Code:</strong> {{ bank_code | default("123456") }}</p>
-    <p><strong>Reference:</strong> {{ invoice_number }}</p>
+  <h3>Payment Information</h3>
+  <p><strong>Bank:</strong> {{ bank_name | default("Sample Bank") }}</p>
+  <p><strong>Account Number:</strong> {{ bank_account | default("1234567890") }}</p>
+  <p><strong>Branch Code:</strong> {{ bank_code | default("123456") }}</p>
+  <p><strong>Reference:</strong> {{ invoice_number }}</p>
 </div>
 
 <div class="footer">
-    <p>
-        Thank you for your payment. Please use the invoice number as your
-        payment reference.
-    </p>
+  <p>
+    Thank you for your payment. Please use the invoice number as your
+    payment reference.
+  </p>
 </div>
 </body>
 </html>

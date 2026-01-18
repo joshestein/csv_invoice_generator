@@ -29,7 +29,7 @@ def generate_invoice(data, template_path: Path, output_path: Path):
     data["doctor_name"] = os.getenv("DOCTOR_NAME")
     data["practice_phone"] = os.getenv("PRACTICE_PHONE")
     data["practice_email"] = os.getenv("PRACTICE_EMAIL")
-    data["practice_address"] = os.getenv("PRACTICE_ADDRESS").replace("\\n", "\n")
+    data["practice_address"] = os.getenv("PRACTICE_ADDRESS")
     data["practice_number"] = os.getenv("PRACTICE_NUMBER")
     data["mp_number"] = os.getenv("MP_NUMBER")
 

@@ -1,3 +1,4 @@
+import argparse
 import os
 from datetime import datetime
 from pathlib import Path
@@ -185,13 +186,32 @@ def generate_invoices_from_csv(csv_path: Path, output_dir: Path = None, month_fi
 
 
 def main():
-    csv_path = Path(os.getcwd()) / "invoices" / "test.csv"
+    parser = argparse.ArgumentParser(
+        description='Generate medical invoices from CSV data, grouped by patient and month.'
+    )
+    parser.add_argument(
+        '--month',
+        nargs='?',
+        default=datetime.now().strftime("%Y-%m"),
+        help='Month to generate invoices for in YYYY-MM format (default: current month)'
+    )
+    parser.add_argument(
+        '--csv',
+        default=Path(os.getcwd()) / "invoices" / "test.csv",
+        type=Path,
+        help='Path to the CSV file (default: invoices/test.csv)'
+    )
+    parser.add_argument(
+        '--output',
+        default=None,
+        type=Path,
+        help='Output directory for PDFs (default: output/)'
+    )
 
-    # Default to current month in YYYY-MM format
-    current_month = datetime.now().strftime("%Y-%m")
-    print(f"Generating invoices for current month: {current_month}")
+    args = parser.parse_args()
 
-    generate_invoices_from_csv(csv_path, month_filter=current_month)
+    print(f"Generating invoices for month: {args.month}")
+    generate_invoices_from_csv(args.csv, output_dir=args.output, month_filter=args.month)
 
 
 if __name__ == "__main__":

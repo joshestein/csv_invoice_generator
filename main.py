@@ -111,9 +111,47 @@ def generate_invoice(data, template_path: Path, output_path: Path):
     print(f"Invoice generated at {output_path}")
 
 
+def generate_invoices_from_csv(csv_path: Path, output_dir: Path = None):
+    """Generate multiple invoices from CSV, grouped by patient and month."""
+    # Set default output directory
+    if output_dir is None:
+        output_dir = Path(os.getcwd()) / "output"
+
+    # Ensure output directory exists
+    output_dir.mkdir(exist_ok=True)
+
+    # Read and group data
+    df = read_invoice(csv_path)
+    groups = group_by_patient_month(df)
+
+    print(f"Found {len(groups)} patient-month group(s)")
+
+    # Generate invoice for each group
+    template_path = Path('invoice_template.html')
+
+    for idx, ((patient_name, year_month), group_df) in enumerate(groups, start=1):
+        # Generate sequential invoice number
+        invoice_number = f"INV-{idx:04d}"
+
+        # Transform to invoice data
+        invoice_data = transform_group_to_invoice_data(group_df, invoice_number, year_month)
+
+        # Generate output filename
+        safe_name = sanitize_filename(patient_name)
+        ym_str = str(year_month).replace('-', '_')
+        output_filename = f"invoice_{safe_name}_{ym_str}.pdf"
+        output_path = output_dir / output_filename
+
+        # Generate PDF
+        generate_invoice(invoice_data, template_path, output_path)
+        print(f"  Generated: {output_filename}")
+
+    print(f"\nCompleted: {len(groups)} invoice(s) in {output_dir}")
+
+
 def main():
-    data = read_invoice(Path(os.getcwd()) / "invoices" / "test.csv")
-    generate_invoice(data, Path('invoice_template.html'), Path('output/invoice.pdf'))
+    csv_path = Path(os.getcwd()) / "invoices" / "test.csv"
+    generate_invoices_from_csv(csv_path)
 
 
 if __name__ == "__main__":

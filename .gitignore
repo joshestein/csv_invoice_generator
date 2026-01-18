@@ -1,2 +1,4 @@
 invoices/
 .env
+invoice_counter.txt
+output/

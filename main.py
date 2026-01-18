@@ -124,7 +124,12 @@ def generate_invoice(data, template_path: Path, output_path: Path):
     data["bank_code"] = os.getenv("BANK_CODE")
 
     html_out = template.render(**data)
-    HTML(string=html_out).write_pdf(output_path)
+
+    # Check if style.css exists in the same directory as the template
+    css_path = template_path.parent / 'style.css'
+    stylesheets = [str(css_path)] if css_path.exists() else None
+
+    HTML(string=html_out).write_pdf(output_path, stylesheets=stylesheets)
     print(f"Invoice generated at {output_path}")
 
 

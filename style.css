@@ -1,0 +1,159 @@
+:root {
+  --primary-color: #2c5282;
+  --text-muted: #666;
+  --border-color: #ddd;
+  --bg-light: #f8f9fa;
+  --font-base: 10pt;
+}
+
+@page {
+  size: A4;
+  margin: 1.5cm 1.5cm;
+  @bottom-right {
+    content: "Page " counter(page) " of " counter(pages);
+    font-size: 9pt;
+    color: var(--text-muted);
+  }
+}
+
+body {
+  font-family: "Helvetica", "Arial", sans-serif;
+  font-size: var(--font-base);
+  line-height: 1.3;
+  color: #333;
+}
+
+.header {
+  margin-bottom: 15px;
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 10px;
+}
+
+.practice-info {
+  text-align: right;
+  color: var(--primary-color);
+}
+
+.practice-info h1 {
+  margin: 0 0 5px 0;
+  font-size: 18pt;
+  font-weight: bold;
+}
+
+.practice-info p {
+  margin: 2px 0;
+  font-size: var(--font-base);
+}
+
+.invoice-title {
+  margin: 30px 0 20px 0;
+  font-size: 14pt;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.invoice-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.invoice-meta-left,
+.invoice-meta-right {
+  width: 48%;
+}
+
+.info-block {
+  margin-bottom: 20px;
+}
+
+.info-block h3 {
+  margin: 0 0 8px 0;
+  font-size: 11pt;
+  color: var(--primary-color);
+  text-transform: uppercase;
+  font-weight: bold;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 3px;
+}
+
+.info-block p {
+  margin: 3px 0;
+  font-size: var(--font-base);
+}
+
+.info-label {
+  display: inline-block;
+  width: 140px;
+  font-weight: bold;
+  color: #555;
+  vertical-align: top;
+}
+
+.address-content {
+  display: inline-block;
+  vertical-align: top;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+thead {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+th {
+  padding: 12px 8px;
+  text-align: left;
+  font-weight: bold;
+  font-size: var(--font-base);
+}
+
+td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #eee;
+  font-size: var(--font-base);
+}
+
+tbody tr:hover {
+  background-color: var(--bg-light);
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.payment-info {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: var(--bg-light);
+    border-left: 4px solid var(--primary-color);
+}
+
+.payment-info h3 {
+    margin: 0 0 10px 0;
+    color: var(--primary-color);
+}
+
+.payment-info p {
+    margin: 5px 0;
+    font-size: var(--font-base);
+}
+
+.footer {
+  clear: both;
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+  font-size: 9pt;
+  color: var(--text-muted);
+  text-align: center;
+}

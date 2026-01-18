@@ -20,6 +20,23 @@ def sanitize_filename(name: str) -> str:
     return name.replace(" ", "_").replace("/", "-").replace("\\", "-")
 
 
+def get_next_invoice_number() -> int:
+    """Get the next invoice number from the counter file."""
+    counter_file = Path(os.getcwd()) / "invoice_counter.txt"
+
+    if counter_file.exists():
+        with open(counter_file, 'r') as f:
+            return int(f.read().strip())
+    return 1
+
+
+def save_invoice_number(number: int):
+    """Save the last used invoice number to the counter file."""
+    counter_file = Path(os.getcwd()) / "invoice_counter.txt"
+    with open(counter_file, 'w') as f:
+        f.write(str(number))
+
+
 def read_invoice(path: Path):
     # Specify dtype for columns that should be strings (to preserve leading zeros)
     dtype_spec = {
@@ -125,12 +142,16 @@ def generate_invoices_from_csv(csv_path: Path, output_dir: Path = None):
 
     print(f"Found {len(groups)} patient-month group(s)")
 
+    # Get starting invoice number
+    current_invoice_num = get_next_invoice_number()
+    print(f"Starting from invoice number: INV-{current_invoice_num:04d}")
+
     # Generate invoice for each group
     template_path = Path('invoice_template.html')
 
-    for idx, ((patient_name, year_month), group_df) in enumerate(groups, start=1):
+    for (patient_name, year_month), group_df in groups:
         # Generate sequential invoice number
-        invoice_number = f"INV-{idx:04d}"
+        invoice_number = f"INV-{current_invoice_num:04d}"
 
         # Transform to invoice data
         invoice_data = transform_group_to_invoice_data(group_df, invoice_number, year_month)
@@ -144,7 +165,9 @@ def generate_invoices_from_csv(csv_path: Path, output_dir: Path = None):
         # Generate PDF
         generate_invoice(invoice_data, template_path, output_path)
         print(f"  Generated: {output_filename}")
+        current_invoice_num += 1
 
+    save_invoice_number(current_invoice_num)
     print(f"\nCompleted: {len(groups)} invoice(s) in {output_dir}")
 
 

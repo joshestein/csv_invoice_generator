@@ -163,8 +163,7 @@
     <div class="practice-info">
         <h1>{{ doctor_name | default("Dr. Medical Practice") }}</h1>
         <p>
-            {{ practice_address | default("123 Medical Street, City, Postal Code")
-            }}
+            {{ practice_address | default("123 Medical Street, City, Postal Code") }}
         </p>
         <p>
             Tel: {{ practice_phone | default("(021) 123-4567") }} | Email: {{
@@ -182,7 +181,8 @@
         <div class="info-block">
             <h3>Patient Information</h3>
             <p><span class="info-label">Name:</span> {{ patient_name }}</p>
-            <p><span class="info-label">Address:</span> <span class="address-content">{{ patient_address | safe }}</span></p>
+            <p><span class="info-label">Address:</span> <span
+                    class="address-content">{{ patient_address | safe }}</span></p>
             <p><span class="info-label">Cell:</span> {{ patient_cell }}</p>
             <p><span class="info-label">Email:</span> {{ patient_email }}</p>
         </div>

@@ -46,6 +46,51 @@ def group_by_patient_month(df: pd.DataFrame):
     return [(name, group) for name, group in grouped]
 
 
+def transform_group_to_invoice_data(group_df: pd.DataFrame, invoice_number: str, year_month):
+    """Transform grouped DataFrame into invoice data dict."""
+    first_row = group_df.iloc[0]
+
+    data = {
+        'patient_name': first_row['Patient name'],
+        'patient_address': first_row['Patient address'].replace('\n', '<br>'),
+        'patient_cell': first_row['Cell number'],
+        'patient_email': first_row['Email'],
+    }
+
+    if pd.notna(first_row['Medical aid name']):
+        data['medical_aid_name'] = first_row['Medical aid name']
+        data['medical_aid_number'] = first_row['Medical aid number']
+
+    if pd.notna(first_row['Next of kin name']):
+        data['next_of_kin_name'] = first_row['Next of kin name']
+        data['next_of_kin_cell'] = first_row['Next of kin cellphone number']
+        if pd.notna(first_row.get('Next of kin email')):
+            data['next_of_kin_email'] = first_row['Next of kin email']
+
+    if pd.notna(first_row['Second next of kin name']):
+        data['second_next_of_kin_name'] = first_row['Second next of kin name']
+        data['second_next_of_kin_cell'] = first_row['Second next of kin cellphone number']
+        if pd.notna(first_row.get('Second next of kin email')):
+            data['second_next_of_kin_email'] = first_row['Second next of kin email']
+
+    # Generate invoice metadata
+    data['invoice_number'] = invoice_number
+    data['invoice_date'] = datetime.now().strftime("%d %B %Y")
+    data['period'] = year_month.strftime("%B %Y")
+
+    line_items = []
+    for _, row in group_df.iterrows():
+        line_items.append({
+            'date': row['Date'],
+            'p_code': row['P. Code'] if pd.notna(row['P. Code']) else '',
+            'icd_code': row['ICD Code'] if pd.notna(row['ICD Code']) else '',
+        })
+
+    data['line_items'] = line_items
+
+    return data
+
+
 def generate_invoice(data, template_path: Path, output_path: Path):
     with open(template_path, 'r') as f:
         template = Template(f.read())

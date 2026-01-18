@@ -34,6 +34,18 @@ def read_invoice(path: Path):
     return df
 
 
+def group_by_patient_month(df: pd.DataFrame):
+    """Group invoice data by patient name and month."""
+    # Parse dates and add year-month column
+    df['parsed_date'] = df['Date'].apply(parse_date)
+    df['year_month'] = df['parsed_date'].dt.to_period('M')
+
+    # Group by patient name and year-month
+    grouped = df.groupby(['Patient name', 'year_month'])
+
+    return [(name, group) for name, group in grouped]
+
+
 def generate_invoice(data, template_path: Path, output_path: Path):
     with open(template_path, 'r') as f:
         template = Template(f.read())

@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -7,6 +8,17 @@ from jinja2 import Template
 from weasyprint import HTML
 
 load_dotenv()
+
+
+def parse_date(date_str: str) -> datetime:
+    """Parse DD/MM/YYYY format to datetime."""
+    return datetime.strptime(date_str, "%d/%m/%Y")
+
+
+def sanitize_filename(name: str) -> str:
+    """Convert patient name to safe filename."""
+    return name.replace(" ", "_").replace("/", "-").replace("\\", "-")
+
 
 def read_invoice(path: Path):
     # Specify dtype for columns that should be strings (to preserve leading zeros)
